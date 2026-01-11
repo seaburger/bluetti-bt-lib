@@ -15,7 +15,7 @@ class BaseDeviceV1(BluettiDevice):
     ):
         super().__init__(
             [
-                StringField(FieldName.DEVICE_TYPE, 1, 12),
+                StringField(FieldName.DEVICE_TYPE, 6, 11),
                 SerialNumberField(FieldName.DEVICE_SN, 17),
                 UIntField(FieldName.BATTERY_SOC, 43, min=0, max=100),
                 UIntField(FieldName.DC_INPUT_POWER, 36),
