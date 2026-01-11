@@ -15,7 +15,7 @@ class BaseDeviceV1(BluettiDevice):
     ):
         super().__init__(
             [
-                StringField(FieldName.DEVICE_TYPE, 10, 6),
+                StringField(FieldName.DEVICE_TYPE, 1, 12),
                 SerialNumberField(FieldName.DEVICE_SN, 17),
                 UIntField(FieldName.BATTERY_SOC, 43, min=0, max=100),
                 UIntField(FieldName.DC_INPUT_POWER, 36),
@@ -33,7 +33,7 @@ class BaseDeviceV1(BluettiDevice):
 
     def get_device_type_registers(self) -> List[ReadableRegisters]:
         return [
-            ReadableRegisters(10, 6),
+            ReadableRegisters(1, 12),
         ]
 
     def get_device_sn_registers(self) -> List[ReadableRegisters]:
