@@ -54,14 +54,25 @@ async def recognize_device(
         for device_reader in device_readers:
 
             # We only need 6 registers to get the device type
-            data = await device_reader.read(
-                bluetti_device.get_device_type_registers(),
-            )
+            if device_reader.config.use_encryption:
+                data = await device_reader.read(
+                    bluetti_device.get_device_type_registers(),
+                )
+            else:
+                data = await device_reader.read(
+                    bluetti_device.get_device_type_registers(),
+                    raw=True
+                )
 
             if data is None:
                 continue
-
-            type_data = data.get(FieldName.DEVICE_TYPE.value)
+            
+            if device_reader.config.use_encryption:
+                type_data = data.get(FieldName.DEVICE_TYPE.value)
+            else:
+                type_data = list(data.values())[0].rstrip(b"\0").decode("ascii", errors="ignore")
+                import string
+                type_data = ''.join(filter(lambda char: char in string.printable, type_data))
 
             if type_data is None:
                 # We have a problem
